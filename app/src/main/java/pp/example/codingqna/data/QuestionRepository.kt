@@ -51,6 +51,24 @@ class QuestionRepository {
             it.isCorrect = result == expected
             result == expected
         })
+
+        addQuestion(Question("Count vowels in a string") {
+            val expected = 3
+            val result = JniCall.count_vowels_in_a_string("Hello World")
+            it.isAnswered = true
+            Log.d("QuestionRepository", "Count vowels in a string: $expected and result is $result")
+            it.isCorrect = result == expected
+            result == expected
+        })
+
+        addQuestion(Question("Remove duplicates from the list") {
+            val expected = intArrayOf(1, 2, 3, 4, 5)
+            val result = JniCall.remove_duplicates_from_the_list(intArrayOf(1, 2, 2, 3, 4, 4, 5))
+            it.isAnswered = true
+            Log.d("QuestionRepository", "Remove duplicates from the list: ${expected.toList()} and result is ${result.toList()}")
+            it.isCorrect = result.contentEquals(expected)
+            result.contentEquals(expected)
+        })
     }
 
 }
