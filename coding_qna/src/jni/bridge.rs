@@ -1,7 +1,7 @@
 
 use jni::JNIEnv;
 use jni::objects::{JClass, JIntArray, JString};
-use jni::sys::{jboolean, jint, jintArray, jsize, jstring};
+use jni::sys::{jboolean, jchar, jint, jintArray, jsize, jstring};
 
 use crate::solutions;
 
@@ -92,5 +92,64 @@ Java_pp_example_codingqna_JniCall_remove_1duplicates_1from_1the_1list<'a>(
             .expect("failed to copy");
 
         return j_int_array.into_raw();
+    }
+}
+
+#[unsafe(no_mangle)]
+pub unsafe extern "system" fn
+Java_pp_example_codingqna_JniCall_findTheFirstNonRepeatedCharInString<'a>(
+    mut env: JNIEnv<'a>,
+    _jclass: JClass<'a>,
+    input: JString
+) -> jchar {
+    let rust_str:String = env.get_string(&input)
+        .unwrap()
+        .into();
+    let result = solutions::find_first_non_repeated_char_in_string(&rust_str);
+    
+    return result as u16;
+}
+
+#[unsafe(no_mangle)]
+pub unsafe extern "system" fn
+Java_pp_example_codingqna_JniCall_factorialUsingRecursion<'a>(
+    _env: JNIEnv<'a>,
+    _jclass: JClass<'a>,
+    input: jint
+) -> jint {
+    let result = solutions::factorial_using_recursion(input);
+    
+    return result as jsize;
+}
+
+#[unsafe(no_mangle)]
+pub unsafe extern "system" fn
+Java_pp_example_codingqna_JniCall_findTheSecondLargestNumber<'a>(
+    mut env: JNIEnv<'a>,
+    _jclass: JClass<'a>,
+    input: JIntArray
+) -> jint {
+    unsafe {
+        let rust_arr: Vec<i32> = env.get_array_elements(&input, jni::objects::ReleaseMode::CopyBack)
+        .unwrap()
+        .to_vec();
+        let result = solutions::find_the_second_largest(&rust_arr);
+        
+        return result as jsize;
+    }
+}
+
+
+#[unsafe(no_mangle)]
+pub unsafe extern "system" fn
+Java_pp_example_codingqna_JniCall_sumOfDigitsInNumber<'a>(
+    mut env: JNIEnv<'a>,
+    _jclass: JClass<'a>,
+    input: jint
+) -> jint {
+    unsafe {
+        let result = solutions::sum_of_digits_in_number(input);
+        
+        return result as jsize;
     }
 }

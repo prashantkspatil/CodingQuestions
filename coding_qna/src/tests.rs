@@ -38,3 +38,27 @@ fn test_remove_duplicates_from_array() {
     result.sort();
     assert_eq!(result, vec![1, 2, 3, 4, 5]);
 }
+
+#[test]
+fn test_find_first_single_char() {
+    let result = find_first_non_repeated_char_in_string("swiss");
+    assert_eq!(result, 'w');
+}
+
+#[test]
+fn test_factorial_using_recursion() {
+    let result = factorial_using_recursion(5);
+    assert_eq!(result, 120);
+}
+
+#[test]
+fn test_find_second_largest_number() {
+    let result = find_the_second_largest(&[1, 5, 3, 6, 8, 12, 5]);
+    assert_eq!(result, 8);
+}
+
+#[test]
+fn test_sum_of_digits_in_number() {
+    let result = sum_of_digits_in_number(25);
+    assert_eq!(result, 7);
+}

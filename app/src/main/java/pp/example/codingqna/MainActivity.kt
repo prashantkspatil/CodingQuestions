@@ -76,6 +76,7 @@ class MainActivity : ComponentActivity() {
                                     } else {
                                         MaterialTheme.colorScheme.onSurface
                                     },
+                                    style = MaterialTheme.typography.labelLarge,
                                     modifier = Modifier.padding(10.dp).height(40.dp)
                                 )
                             }

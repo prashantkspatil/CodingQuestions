@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 
 pub fn reverse_a_string(str: &str) -> String {
     let rev_str:String = str.chars().rev().collect();
@@ -48,4 +48,43 @@ pub fn remove_duplicates_from_the_list(input: &[i32]) -> Vec<i32> {
     }
     
     return result.into_iter().collect();
+}
+
+pub fn find_first_non_repeated_char_in_string(input: &str) -> char {
+    let mut char_couts:HashMap<char, i32> = HashMap::new();
+    input.chars().for_each(|x| {
+        let count = char_couts.entry(x).or_insert(0);
+        *count += 1;
+    });
+    let ret = input.chars().find(|c| char_couts[c] == 1).unwrap();
+    ret
+}
+
+pub fn factorial_using_recursion(num: i32) -> i32 {
+    if num <= 1 {
+        return 1;
+    }
+    return factorial_using_recursion(num - 1) * num;
+}
+
+pub fn find_the_second_largest(arr: &[i32]) -> i32 {
+    let mut max = arr[0];
+    let mut second_largest = arr[0];
+    for i in arr.iter() {
+        if *i > max {
+            second_largest = max;
+            max = *i;
+        }
+    }
+    return second_largest;
+}
+
+pub fn sum_of_digits_in_number(num:i32) -> i32 {
+    let mut sum = 0;
+    let mut num = num;
+    while num > 0 {
+        sum += num % 10;
+        num = num / 10;
+    }
+    return sum;
 }

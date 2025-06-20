@@ -69,6 +69,43 @@ class QuestionRepository {
             it.isCorrect = result.contentEquals(expected)
             result.contentEquals(expected)
         })
+
+        addQuestion(Question("Find The First Non Repeated Char In String") {
+            val expected = 'w'
+            val result = JniCall.findTheFirstNonRepeatedCharInString("swiss")
+            it.isAnswered = true
+            Log.d("QuestionRepository", "Find The First Non Repeated Char In String: $expected and result is $result")
+            it.isCorrect = result == expected
+            result == expected
+        })
+
+        addQuestion(Question("Factorial Using Recursion") {
+            val expected = 120
+            val result = JniCall.factorialUsingRecursion(5)
+            it.isAnswered = true
+            Log.d("QuestionRepository", "Factorial Using Recursion: $expected and result is $result")
+            it.isCorrect = result == expected
+            result == expected
+        })
+
+        addQuestion(Question("Find the second largest number") {
+            val expected = 8
+            val result = JniCall.findTheSecondLargestNumber(intArrayOf(1, 5, 3, 6, 8, 12, 5))
+            it.isAnswered = true
+            Log.d("QuestionRepository", "Find the second largest number: $expected and result is $result")
+            it.isCorrect = result == expected
+            result == expected
+        })
+
+        addQuestion(Question("Sum of digits in number") {
+            val expected = 6
+            val result = JniCall.sumOfDigitsInNumber(15)
+            it.isAnswered = true
+            Log.d("QuestionRepository", "Sum of digits in number: $expected and result is $result")
+            it.isCorrect = result == expected
+            result == expected
+        })
+
     }
 
 }
