@@ -62,3 +62,22 @@ fn test_sum_of_digits_in_number() {
     let result = sum_of_digits_in_number(25);
     assert_eq!(result, 7);
 }
+
+#[test]
+fn test_find_the_missing_number_in_array() {
+    let result = find_the_missing_number_in_array(&[1, 2, 3, 4, 6]);
+    assert_eq!(result, 5);
+}
+
+#[test]
+fn test_check_if_two_strings_are_anagram() {
+    let result = check_if_two_strings_are_anagram("silent", "listen");
+    assert!(result);
+}
+
+#[test]
+fn test_flatten_a_list_of_integers() {
+    let arr = vec![vec![1, 2], vec![3, 4], vec![5, 6]];
+    let result = flatten_a_list_of_integers(&arr);
+    assert_eq!(result, vec![1, 2, 3, 4, 5, 6]);
+}

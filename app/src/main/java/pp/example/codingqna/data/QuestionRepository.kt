@@ -106,6 +106,32 @@ class QuestionRepository {
             result == expected
         })
 
+        addQuestion(Question("Find The Missing Number In Array") {
+            val expected = 3
+            val result = JniCall.findTheMissingNumberInArray(intArrayOf(1, 2, 4, 5))
+            it.isAnswered = true
+            Log.d("QuestionRepository", "Find The Missing Number In Array: $expected and result is $result")
+            it.isCorrect = result == expected
+            result == expected
+        })
+
+        addQuestion(Question("Check If Two Strings Are Anagram") {
+            val expected = true
+            val result = JniCall.checkIfTwoStringsAreAnagram("silent", "listen")
+            it.isAnswered = true
+            Log.d("QuestionRepository", "Check If Two Strings Are Anagram: $expected and result is $result")
+            it.isCorrect = result == expected
+            result == expected
+        })
+
+        addQuestion(Question("Flatten A List Of Integers") {
+            val expected = intArrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9)
+            val result = JniCall.flattenAListOfIntegers(arrayOf(intArrayOf(1, 2, 3), intArrayOf(4, 5, 6), intArrayOf(7, 8, 9)))
+            it.isAnswered = true
+            Log.d("QuestionRepository", "Flatten A List Of Integers: ${expected.toList()} and result is ${result.toList()}")
+            it.isCorrect = result.contentEquals(expected)
+            result.contentEquals(expected)
+        })
     }
 
 }

@@ -1,7 +1,7 @@
 
 use jni::JNIEnv;
-use jni::objects::{JClass, JIntArray, JString};
-use jni::sys::{jboolean, jchar, jint, jintArray, jsize, jstring};
+use jni::objects::{JClass, JIntArray, JObjectArray, JString};
+use jni::sys::{jboolean, jchar, jint, jintArray, jobject, jobjectArray, jsize, jstring};
 
 use crate::solutions;
 
@@ -139,7 +139,6 @@ Java_pp_example_codingqna_JniCall_findTheSecondLargestNumber<'a>(
     }
 }
 
-
 #[unsafe(no_mangle)]
 pub unsafe extern "system" fn
 Java_pp_example_codingqna_JniCall_sumOfDigitsInNumber<'a>(
@@ -151,5 +150,69 @@ Java_pp_example_codingqna_JniCall_sumOfDigitsInNumber<'a>(
         let result = solutions::sum_of_digits_in_number(input);
         
         return result as jsize;
+    }
+}
+
+#[unsafe(no_mangle)]
+pub unsafe extern "system" fn
+Java_pp_example_codingqna_JniCall_findTheMissingNumberInArray<'a>(
+    mut env: JNIEnv<'a>,
+    _jclass: JClass<'a>,
+    input: JIntArray
+) -> jint {
+    unsafe {
+        let rust_arr: Vec<i32> = env.get_array_elements(&input, jni::objects::ReleaseMode::CopyBack)
+        .unwrap()
+        .to_vec();
+        let result = solutions::find_the_missing_number_in_array(&rust_arr);
+        
+        return result;
+    }
+}
+
+#[unsafe(no_mangle)]
+pub unsafe extern "system" fn
+Java_pp_example_codingqna_JniCall_checkIfTwoStringsAreAnagram<'a>(
+    mut env: JNIEnv<'a>,
+    _jclass: JClass<'a>,
+    input1: JString,
+    input2: JString
+) -> jboolean {
+    let rust_str1: String = env.get_string(&input1)
+        .unwrap()
+        .into();
+    let rust_str2: String = env.get_string(&input2)
+        .unwrap()
+        .into();
+    let result = solutions::check_if_two_strings_are_anagram(&rust_str1, &rust_str2);
+    
+    return u8::from(result); // equivalent to result.into()
+}
+
+#[unsafe(no_mangle)]
+pub unsafe extern "system" fn
+Java_pp_example_codingqna_JniCall_flattenAListOfIntegers<'a>(
+    mut env: JNIEnv<'a>,
+    _jclass: JClass<'a>,
+    input: JObjectArray
+) -> jintArray {
+    unsafe {
+        let mut rust_2d_arr: Vec<Vec<i32>> = vec![];
+        let length = env.get_array_length(&input).unwrap();
+        for i in 0 .. length {
+            let obj: JIntArray = env.get_object_array_element(&input, i)
+                .unwrap()
+                .into();
+            let int_vec = env.get_array_elements(&obj, jni::objects::ReleaseMode::CopyBack)
+                .unwrap()
+                .to_vec();
+            rust_2d_arr.push(int_vec);
+            env.delete_local_ref(obj).unwrap();
+        }
+        let result = solutions::flatten_a_list_of_integers(&rust_2d_arr);
+        
+        let ret = env.new_int_array(result.len() as i32).unwrap();
+        env.set_int_array_region(&ret, 0, &result).unwrap();
+        return ret.into_raw();
     }
 }

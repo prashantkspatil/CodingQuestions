@@ -88,3 +88,24 @@ pub fn sum_of_digits_in_number(num:i32) -> i32 {
     }
     return sum;
 }
+
+pub fn find_the_missing_number_in_array(numArr :&[i32]) -> i32 {
+    let arr_sum: i32 = numArr.iter().sum();
+    let n: i32 = (numArr.len() + 1).try_into().unwrap();
+    let total = (n * (n + 1)) / 2;
+    return total - arr_sum;
+}
+
+pub fn check_if_two_strings_are_anagram(str1: &str, str2: &str) -> bool {
+    let mut char_vec: Vec<char> = str1.chars().collect();
+    char_vec.sort();
+    let mut char_vec2: Vec<char> = str2.chars().collect();
+    char_vec2.sort();
+
+    char_vec == char_vec2
+}
+
+pub fn flatten_a_list_of_integers(mut arr: &Vec<Vec<i32>>) -> Vec<i32> {
+    let flat = arr.iter().flatten().collect::<Vec<_>>();
+    return flat.iter().map(|&i| *i).collect();
+}

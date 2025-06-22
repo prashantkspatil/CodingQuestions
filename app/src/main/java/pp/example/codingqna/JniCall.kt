@@ -15,4 +15,7 @@ object JniCall {
 /* 08 */    external fun factorialUsingRecursion(num: Int): Int
 /* 09 */    external fun findTheSecondLargestNumber(arr: IntArray): Int
 /* 10 */    external fun sumOfDigitsInNumber(num: Int): Int
+/* 11 */    external fun findTheMissingNumberInArray(arr: IntArray): Int
+/* 12 */    external fun checkIfTwoStringsAreAnagram(str1: String, str2: String): Boolean
+/* 13 */    external fun flattenAListOfIntegers(arr: Array<IntArray>): IntArray
 }
