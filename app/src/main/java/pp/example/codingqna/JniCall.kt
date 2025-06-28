@@ -18,4 +18,9 @@ object JniCall {
 /* 11 */    external fun findTheMissingNumberInArray(arr: IntArray): Int
 /* 12 */    external fun checkIfTwoStringsAreAnagram(str1: String, str2: String): Boolean
 /* 13 */    external fun flattenAListOfIntegers(arr: Array<IntArray>): IntArray
+/* 14 */    external fun checkIfNumberIsPrime(num: Int): Boolean
+/* 15 */    external fun findCommonElementInTwoArray(arr1: IntArray, arr2: IntArray): IntArray?
+//Let's try list
+/* 16 */    external fun sortAListOfStringByItsLengths(stringList: List<String>): List<String>
+/* 17 */    external fun findTheLargestPalindromeInAString(str: String): String
 }

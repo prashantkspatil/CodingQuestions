@@ -132,6 +132,46 @@ class QuestionRepository {
             it.isCorrect = result.contentEquals(expected)
             result.contentEquals(expected)
         })
+
+        addQuestion(Question("Check if number is Prime") {
+            val expected = true
+            val result = JniCall.checkIfNumberIsPrime(7)
+                    && JniCall.checkIfNumberIsPrime(13)
+                    && !JniCall.checkIfNumberIsPrime(10)
+                    && !JniCall.checkIfNumberIsPrime(15)
+                    && JniCall.checkIfNumberIsPrime(29)
+            it.isAnswered = true
+            Log.d("QuestionRepository", "Check if number is Prime: $expected and result is $result")
+            it.isCorrect = result == expected
+            result == expected
+        })
+
+        addQuestion(Question("Find Common Element In Two Array") {
+            val expected = intArrayOf(4, 5)
+            val result = JniCall.findCommonElementInTwoArray(intArrayOf(1, 2, 3, 4, 5), intArrayOf(4, 5, 6, 7, 8))
+            it.isAnswered = true
+            Log.d("QuestionRepository", "Find Common Element In Two Array: $expected and result is $result")
+            it.isCorrect = result.contentEquals(expected)
+            result.contentEquals(expected)
+        })
+
+        addQuestion(Question("Sort A List Of String By Its Lengths") {
+            var expected = mutableListOf("kiwi", "apple", "banana", "cherry")
+            val result = JniCall.sortAListOfStringByItsLengths(listOf("apple", "banana", "cherry", "kiwi"))
+            it.isAnswered = true
+            Log.d("QuestionRepository", "Sort A List Of String By Its Lengths: $expected and result is $result")
+            it.isCorrect = result == expected
+            result == expected
+        })
+
+        addQuestion(Question("Find The Largest Palindrome In A String") {
+            var expected = "abba"
+            val result = JniCall.findTheLargestPalindromeInAString("abbaba")
+            it.isAnswered = true
+            Log.d("QuestionRepository", "Find The Largest Palindrome In A String: $expected and result is $result")
+            it.isCorrect = result == expected
+            result == expected
+        })
     }
 
 }

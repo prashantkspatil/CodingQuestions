@@ -81,3 +81,31 @@ fn test_flatten_a_list_of_integers() {
     let result = flatten_a_list_of_integers(&arr);
     assert_eq!(result, vec![1, 2, 3, 4, 5, 6]);
 }
+
+#[test]
+fn test_check_if_num_is_prime() {
+    let result = check_if_number_is_prime(7)
+        && check_if_number_is_prime(13)
+        && !check_if_number_is_prime(10)
+        && !check_if_number_is_prime(15)
+        && check_if_number_is_prime(29);
+    assert_eq!(result, true);
+}
+
+#[test]
+fn test_find_common_element_in_two_array() {
+    let result = find_common_element_in_two_array(vec![1, 2, 3, 4, 5], vec![4, 5, 6]);
+    assert_eq!(result, vec![4, 5]);
+}
+
+#[test]
+fn test_sort_a_list_of_string_by_its_lengths() {
+    let result = sort_a_list_of_string_by_its_lengths(vec!["apple", "banana", "cherry", "kiwi"]);
+    assert_eq!(result, vec!["kiwi", "apple", "banana", "cherry"]);
+}
+
+#[test]
+fn test_find_the_largest_palindrome_in_astring() {
+    let result = find_the_largest_palindrome_in_astring(String::from("cbbaba"));
+    assert_eq!(result, "bab");
+}

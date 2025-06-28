@@ -109,3 +109,44 @@ pub fn flatten_a_list_of_integers(mut arr: &Vec<Vec<i32>>) -> Vec<i32> {
     let flat = arr.iter().flatten().collect::<Vec<_>>();
     return flat.iter().map(|&i| *i).collect();
 }
+
+pub fn check_if_number_is_prime(num: i32) -> bool {
+    let num_sqrt: i32 = (num as f32).sqrt() as i32;
+    for i in 2 ..= num_sqrt {
+        if num % i == 0 {
+            return false;
+        }
+    }
+    return true;
+}
+
+pub fn find_common_element_in_two_array(vec1: Vec<i32>, vec2: Vec<i32>) -> Vec<i32> {
+    let set1: HashSet<_> = vec1.iter().cloned().collect();
+    let set2: HashSet<_> = vec2.iter().cloned().collect();
+    let mut merged: Vec<i32> = set1.intersection(&set2).cloned().collect();
+    
+    merged.sort();
+
+    return merged;
+}
+
+pub fn sort_a_list_of_string_by_its_lengths(input: Vec<&str>) -> Vec<&str> {
+    let mut ret = input.clone();
+    ret.sort_by_key(|s| s.len());
+    return ret;
+}
+
+pub fn find_the_largest_palindrome_in_astring(str: String) -> String {
+    let chars = str.chars();
+    let mut sub_string = "";
+    for i in 0 .. str.len() {
+        for j in i .. str.len() {
+            let sub = &str[i..j];
+            let rev:String = sub.chars().rev().collect();
+            if sub == &rev && sub_string.len() < sub.len() {
+                sub_string = &sub;
+            }
+        }
+    }
+    return String::from(sub_string);
+}

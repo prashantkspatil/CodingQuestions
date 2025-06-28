@@ -2,6 +2,8 @@ package pp.example.codingqna.question_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,7 +30,13 @@ class QuestionsViewModel(
     fun onEvent(event: UiEvent) {
         when(event) {
             is UiEvent.OnQuestionClicked -> {
-                event.question.isCorrect = event.question.executer(event.question)
+                viewModelScope.async {
+                    event.question.executer(event.question)
+                }.also {
+                    viewModelScope.launch(Dispatchers.Main) {
+                        event.question.isCorrect = it.await()
+                    }
+                }
             }
         }
     }

@@ -1,9 +1,25 @@
 
-use jni::JNIEnv;
-use jni::objects::{JClass, JIntArray, JObjectArray, JString};
+use std::result;
+
+use jni::{JNIEnv, JavaVM};
+use jni::objects::{JClass, JIntArray, JObject, JObjectArray, JString, JValue};
 use jni::sys::{jboolean, jchar, jint, jintArray, jobject, jobjectArray, jsize, jstring};
+use android_logger::{Config, FilterBuilder};
+use log::Level;
 
 use crate::solutions;
+
+// JNI_OnLoad is called when the native library is loaded.
+#[unsafe(no_mangle)]
+pub extern "system" fn JNI_OnLoad(_vm: JavaVM, _reserved: *mut std::os::raw::c_void) -> jint {
+    android_logger::init_once(
+        Config::default()
+            .with_min_level(Level::Debug)
+            .with_tag("coding_qna"),
+    );
+
+    jni::sys::JNI_VERSION_1_6
+}
 
 #[unsafe(no_mangle)]
 pub extern "system" fn
@@ -215,4 +231,98 @@ Java_pp_example_codingqna_JniCall_flattenAListOfIntegers<'a>(
         env.set_int_array_region(&ret, 0, &result).unwrap();
         return ret.into_raw();
     }
+}
+
+#[unsafe(no_mangle)]
+pub unsafe extern "system" fn
+Java_pp_example_codingqna_JniCall_checkIfNumberIsPrime<'a>(
+    _env: JNIEnv<'a>,
+    _jclass: JClass<'a>,
+    input: jint
+) -> jboolean {
+    let result = solutions::check_if_number_is_prime(input);
+    return result.into();
+}
+
+#[unsafe(no_mangle)]
+pub unsafe extern "system" fn
+Java_pp_example_codingqna_JniCall_findCommonElementInTwoArray<'a>(
+    mut env: JNIEnv<'a>,
+    _jclass: JClass<'a>,
+    input1: JIntArray,
+    input2: JIntArray
+) -> jintArray {
+    
+    unsafe {
+        let rust_arr1: Vec<i32> = env.get_array_elements(&input1, jni::objects::ReleaseMode::CopyBack)
+        .unwrap()
+        .to_vec();
+    
+        let rust_arr2: Vec<i32> = env.get_array_elements(&input2, jni::objects::ReleaseMode::CopyBack)
+        .unwrap()
+        .to_vec();
+
+        let result = solutions::find_common_element_in_two_array(rust_arr1, rust_arr2);
+        
+        let ret = env.new_int_array(result.len() as i32).unwrap();
+        env.set_int_array_region(&ret, 0, &result).unwrap();
+        return ret.into_raw();
+    }
+}
+
+#[unsafe(no_mangle)]
+pub unsafe extern "system" fn
+Java_pp_example_codingqna_JniCall_sortAListOfStringByItsLengths<'a>(
+    mut env: JNIEnv<'a>,
+    _jclass: JClass<'a>,
+    input: JObject
+) -> JObject<'a> {
+    let size = env.call_method(&input, "size", "()I", &[])
+        .expect("Failed to call list size method.")
+        .i()
+        .expect("Failed to convert size to i32");
+    let mut in_vec: Vec<String> = vec![];
+    
+    for i in 0 .. size {
+        let j_obj = env.call_method(&input, "get", "(I)Ljava/lang/Object;", &[JValue::from(i)])
+            .expect("Failed to call list.get method")
+            .l()
+            .expect("Failed to convert to JObject")
+            .into();
+        let rust_str: String = env.get_string(&j_obj)
+            .unwrap()
+            .into();
+        in_vec.push(rust_str);
+    }
+
+    let result = solutions::sort_a_list_of_string_by_its_lengths(in_vec.iter().map(|s| s.as_str()).collect());
+
+    let list_class = env.find_class("java/util/ArrayList").expect("Failed to find ArrayList cass");
+    let list_obj = env.new_object(list_class, "()V", &[])
+        .expect("Failed to create ArrayList object.");
+
+    for s in result.iter() {
+        let str = env.new_string(s).expect("Failed to create string");
+        let _is_success = env.call_method(&list_obj, "add", "(Ljava/lang/Object;)Z", &[JValue::from(&str)])
+            .expect("Failed to call list.add method")
+            .z()
+            .expect("Failed to convert bool");
+    }
+    return list_obj;
+}
+
+#[unsafe(no_mangle)]
+pub unsafe extern "system" fn
+Java_pp_example_codingqna_JniCall_findTheLargestPalindromeInAString<'a>(
+    mut env: JNIEnv<'a>,
+    _jclass: JClass<'a>,
+    input: JString
+) -> JString<'a> {
+    let in_str: String = env.get_string(&input)
+        .expect("Failed to get string")
+        .into();
+    let result = solutions::find_the_largest_palindrome_in_astring(in_str);
+    let ret = env.new_string(result)
+        .expect("Failed to create java string");
+    return ret;
 }
